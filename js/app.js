@@ -32,7 +32,7 @@ function formatDate(dateStr) {
   }).format(new Date(dateStr));
 }
 
-function getYouTubeEmbedUrl(url) {
+function getYouTubeVideoId(url) {
   try {
     const parsed = new URL(url);
     let videoId = null;
@@ -41,7 +41,7 @@ function getYouTubeEmbedUrl(url) {
     } else if (parsed.hostname.includes('youtube.com')) {
       videoId = parsed.searchParams.get('v');
     }
-    return videoId ? `https://www.youtube-nocookie.com/embed/${videoId}` : null;
+    return videoId || null;
   } catch {
     return null;
   }
@@ -50,10 +50,10 @@ function getYouTubeEmbedUrl(url) {
 function renderEntries(entries) {
   for (const entry of entries) {
     let contentHtml;
-    const embedUrl = entry.video_url ? getYouTubeEmbedUrl(entry.video_url) : null;
+    const videoId = entry.video_url ? getYouTubeVideoId(entry.video_url) : null;
 
-    if (embedUrl) {
-      contentHtml = `<div class="entry-video"><iframe src="${escapeHtml(embedUrl)}" title="${escapeHtml(entry.title)}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
+    if (videoId) {
+      contentHtml = `<a class="entry-video" href="${escapeHtml(entry.video_url)}" target="_blank" rel="noopener"><img src="https://img.youtube.com/vi/${escapeHtml(videoId)}/maxresdefault.jpg" alt="${escapeHtml(entry.title)}"><span class="play-btn"></span></a>`;
     } else {
       const bullets = parseBulletPoints(entry.summary);
       contentHtml = `<ul class="entry-summary">${bullets.map(b => `<li>${escapeHtml(b)}</li>`).join('')}</ul>`;
