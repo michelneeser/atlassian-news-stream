@@ -31,10 +31,32 @@ function formatDate(dateStr) {
   }).format(new Date(dateStr));
 }
 
+function getYouTubeEmbedUrl(url) {
+  try {
+    const parsed = new URL(url);
+    let videoId = null;
+    if (parsed.hostname === 'youtu.be') {
+      videoId = parsed.pathname.slice(1);
+    } else if (parsed.hostname.includes('youtube.com')) {
+      videoId = parsed.searchParams.get('v');
+    }
+    return videoId ? `https://www.youtube-nocookie.com/embed/${videoId}` : null;
+  } catch {
+    return null;
+  }
+}
+
 function renderEntries(entries) {
   for (const entry of entries) {
-    const bullets = parseBulletPoints(entry.summary);
-    const bulletHtml = bullets.map(b => `<li>${escapeHtml(b)}</li>`).join('');
+    let contentHtml;
+    const embedUrl = entry.video_url ? getYouTubeEmbedUrl(entry.video_url) : null;
+
+    if (embedUrl) {
+      contentHtml = `<div class="entry-video"><iframe src="${escapeHtml(embedUrl)}" title="${escapeHtml(entry.title)}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
+    } else {
+      const bullets = parseBulletPoints(entry.summary);
+      contentHtml = `<ul class="entry-summary">${bullets.map(b => `<li>${escapeHtml(b)}</li>`).join('')}</ul>`;
+    }
 
     const article = document.createElement('article');
     article.className = 'entry';
@@ -44,7 +66,7 @@ function renderEntries(entries) {
         <time class="entry-date" datetime="${escapeHtml(entry.published_at)}">${formatDate(entry.published_at)}</time>
       </div>
       <h2><a href="${escapeHtml(entry.source_url)}" target="_blank" rel="noopener">${escapeHtml(entry.title)}</a></h2>
-      <ul class="entry-summary">${bulletHtml}</ul>
+      ${contentHtml}
     `;
     feedEl.appendChild(article);
   }
@@ -56,7 +78,7 @@ async function loadEntries() {
 
     const { data, error } = await client
       .from('feed_entries')
-      .select('title, summary, source_url, published_at, feed_source')
+      .select('title, summary, source_url, published_at, feed_source, video_url')
       .order('published_at', { ascending: false })
       .range(currentOffset, currentOffset + PAGE_SIZE - 1);
 
