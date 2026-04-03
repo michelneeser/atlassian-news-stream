@@ -5,6 +5,7 @@ const SUPABASE_ANON_KEY = 'sb_publishable_q8NVxPXw9hC3wOGrZuyBgQ_qG9HStnd';
 const PAGE_SIZE = 10;
 
 let currentOffset = 0;
+let currentFilter = 'all';
 let client;
 
 const feedEl = document.getElementById('feed');
@@ -76,11 +77,17 @@ async function loadEntries() {
   try {
     loadMoreEl.disabled = true;
 
-    const { data, error } = await client
+    let query = client
       .from('feed_entries')
-      .select('title, summary, source_url, published_at, feed_source, video_url')
+      .select('title, summary, source_url, published_at, feed_source, video_url, content_type')
       .order('published_at', { ascending: false })
       .range(currentOffset, currentOffset + PAGE_SIZE - 1);
+
+    if (currentFilter !== 'all') {
+      query = query.eq('content_type', currentFilter);
+    }
+
+    const { data, error } = await query;
 
     if (error) throw error;
 
@@ -115,4 +122,22 @@ document.addEventListener('DOMContentLoaded', () => {
   loadEntries();
 
   loadMoreEl.addEventListener('click', loadEntries);
+
+  document.querySelector('.filters').addEventListener('click', (e) => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn || btn.classList.contains('active')) return;
+
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    currentFilter = btn.dataset.filter;
+    currentOffset = 0;
+    feedEl.querySelectorAll('.entry').forEach(el => el.remove());
+    loadMoreEl.hidden = true;
+    emptyEl.hidden = true;
+    errorEl.hidden = true;
+    loadingEl.hidden = false;
+
+    loadEntries();
+  });
 });
