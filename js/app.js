@@ -2,7 +2,7 @@
 const SUPABASE_URL = 'https://nmkmjoditihvazjmwvdy.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_q8NVxPXw9hC3wOGrZuyBgQ_qG9HStnd';
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 10;
 
 let currentOffset = 0;
 let client;

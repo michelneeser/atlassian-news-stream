@@ -171,6 +171,10 @@ main {
   margin-bottom: 0;
 }
 
+#load-more[hidden] {
+  display: none;
+}
+
 #load-more {
   display: block;
   max-width: 720px;
