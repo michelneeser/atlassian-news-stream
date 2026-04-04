@@ -124,11 +124,11 @@ async function loadEntries() {
 document.addEventListener('DOMContentLoaded', () => {
   client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  client.from('page_views').insert({
-    referrer: document.referrer || null
-  }).then(({ error }) => {
-    if (error) console.error('page_views insert failed:', error);
-  });
+  if (window.location.hostname.includes('atlasfeed.cc')) {
+    client.from('page_views').insert({
+      referrer: document.referrer || null
+    });
+  }
 
   const initialFilter = new URLSearchParams(window.location.search).get('filter');
   if (initialFilter) {
