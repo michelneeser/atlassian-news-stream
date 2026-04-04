@@ -39,7 +39,12 @@ function getYouTubeVideoId(url) {
     if (parsed.hostname === 'youtu.be') {
       videoId = parsed.pathname.slice(1);
     } else if (parsed.hostname.includes('youtube.com')) {
-      videoId = parsed.searchParams.get('v');
+      const shortsMatch = parsed.pathname.match(/^\/shorts\/([a-zA-Z0-9_-]+)/);
+      if (shortsMatch) {
+        videoId = shortsMatch[1];
+      } else {
+        videoId = parsed.searchParams.get('v');
+      }
     }
     return videoId || null;
   } catch {
