@@ -25,7 +25,7 @@ function parseBulletPoints(summary) {
 }
 
 function formatDate(dateStr) {
-  return new Intl.DateTimeFormat('en-AU', {
+  return new Intl.DateTimeFormat('en-US', {
     day: 'numeric',
     month: 'short',
     year: 'numeric'
