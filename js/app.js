@@ -126,6 +126,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   client.from('page_views').insert({
     referrer: document.referrer || null
+  }).then(({ error }) => {
+    if (error) console.error('page_views insert failed:', error);
   });
 
   const initialFilter = new URLSearchParams(window.location.search).get('filter');
