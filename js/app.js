@@ -124,6 +124,16 @@ async function loadEntries() {
 document.addEventListener('DOMContentLoaded', () => {
   client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+  const initialFilter = new URLSearchParams(window.location.search).get('filter');
+  if (initialFilter) {
+    const btn = document.querySelector(`.filter-btn[data-filter="${initialFilter}"]`);
+    if (btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = initialFilter;
+    }
+  }
+
   loadEntries();
 
   loadMoreEl.addEventListener('click', loadEntries);
@@ -136,6 +146,14 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.classList.add('active');
 
     currentFilter = btn.dataset.filter;
+    const params = new URLSearchParams(window.location.search);
+    if (currentFilter === 'all') {
+      params.delete('filter');
+    } else {
+      params.set('filter', currentFilter);
+    }
+    const query = params.toString();
+    history.replaceState(null, '', query ? `?${query}` : window.location.pathname);
     currentOffset = 0;
     feedEl.querySelectorAll('.entry').forEach(el => el.remove());
     loadMoreEl.hidden = true;
