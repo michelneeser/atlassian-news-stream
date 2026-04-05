@@ -55,7 +55,7 @@ header {
 }
 
 header h1 {
-  font-size: 1.7rem;
+  font-size: 1.55rem;
   font-weight: 700;
   margin-bottom: 0.35rem;
   letter-spacing: -0.02em;
@@ -80,7 +80,7 @@ header h1 a {
 
 .subtitle {
   color: rgba(255, 255, 255, 0.85);
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   font-weight: 400;
 }
 
