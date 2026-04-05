@@ -329,6 +329,10 @@ footer a:hover {
     font-size: 1.4rem;
   }
 
+  .subtitle {
+    font-size: 0.85rem;
+  }
+
   .entry {
     padding: 1rem 1.15rem;
   }
