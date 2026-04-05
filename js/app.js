@@ -124,12 +124,6 @@ async function loadEntries() {
 document.addEventListener('DOMContentLoaded', () => {
   client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  if (window.location.hostname.includes('atlasfeed.cc')) {
-    client.from('page_views').insert({
-      referrer: document.referrer || null
-    }).then();
-  }
-
   const initialFilter = new URLSearchParams(window.location.search).get('filter');
   if (initialFilter) {
     const btn = document.querySelector(`.filter-btn[data-filter="${initialFilter}"]`);
