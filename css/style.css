@@ -49,13 +49,13 @@ body {
 header {
   background: var(--header-gradient);
   color: #ffffff;
-  padding: 3rem 1.5rem 2.5rem;
+  padding: 1.1rem 1.5rem 1.25rem;
   margin-bottom: 2rem;
   text-align: center;
 }
 
 header h1 {
-  font-size: 2rem;
+  font-size: 1.7rem;
   font-weight: 700;
   margin-bottom: 0.35rem;
   letter-spacing: -0.02em;
@@ -64,6 +64,18 @@ header h1 {
 header h1 a {
   color: inherit;
   text-decoration: none;
+}
+
+.unofficial-badge {
+  font-size: 0.4em;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.9);
+  padding: 0.15em 0.5em;
+  border-radius: 9999px;
+  vertical-align: middle;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .subtitle {
@@ -77,6 +89,7 @@ header h1 a {
   margin: 0 auto 1.25rem;
   padding: 0 1rem;
   display: flex;
+  justify-content: center;
   gap: 0.5rem;
 }
 
@@ -309,11 +322,11 @@ footer a:hover {
 
 @media (max-width: 480px) {
   header {
-    padding: 2rem 1rem 1.75rem;
+    padding: 1.1rem 1rem 1.25rem;
   }
 
   header h1 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .entry {
