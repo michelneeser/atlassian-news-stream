@@ -60,7 +60,11 @@ function renderEntries(entries) {
       contentHtml = `<a class="entry-video" href="${escapeHtml(entry.video_url)}" target="_blank" rel="noopener"><img src="https://img.youtube.com/vi/${escapeHtml(videoId)}/maxresdefault.jpg" alt="${escapeHtml(entry.title)}"><span class="play-btn"></span></a>`;
     } else {
       const bullets = parseBulletPoints(entry.summary);
-      contentHtml = `<ul class="entry-summary">${bullets.map(b => `<li>${escapeHtml(b)}</li>`).join('')}</ul>`;
+      if (bullets.length === 1) {
+        contentHtml = `<p class="entry-summary-single">${escapeHtml(bullets[0])}</p>`;
+      } else {
+        contentHtml = `<ul class="entry-summary">${bullets.map(b => `<li>${escapeHtml(b)}</li>`).join('')}</ul>`;
+      }
     }
 
     const article = document.createElement('article');
